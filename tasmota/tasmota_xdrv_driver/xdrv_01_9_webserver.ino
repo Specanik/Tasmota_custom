@@ -408,7 +408,7 @@ const char HTTP_COUNTER[] PROGMEM =
   "<br><div id='t' style='text-align:center;'></div>";
 
 const char HTTP_END[] PROGMEM =
-  "<div style='text-align:right;font-size:11px;'><hr/><a href='https://bit.ly/tasmota' target='_blank' style='color:#aaa;'>Tasmota %s%s " D_BY " speca</a></div>"
+  "<div style='text-align:right;font-size:11px;'><hr/><a href='https://kikai.vn' target='_blank' style='color:#aaa;'>RFID " D_BY " speca</a></div>"
   "</div>"
   "</body>"
   "</html>";
