@@ -263,8 +263,8 @@ const char HTTP_HEAD_STYLE3[] PROGMEM =
   "<h3>%s " D_MODULE "</h3>"
 #endif
 */
-  "<h3>" RDID "</h3>"    // Module name
-  "<h2>" RDID "</h2>";   // Device name
+  "<h3>%s</h3>"    // Module name
+  "<h2>%s</h2>";   // Device name
 
 const char HTTP_MSG_SLIDER_GRADIENT[] PROGMEM =
   "<div id='%s' class='r' style='background-image:linear-gradient(to right,%s,%s);'>"
