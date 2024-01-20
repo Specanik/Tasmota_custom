@@ -1,7 +1,7 @@
 /*
   xdrv_01_webserver.ino - webserver for Tasmota
 
-  Copyright (C) 2021  Theo Arends and Adrian Scillato
+  Copyright (C) 2021  speca and Adrian Scillato
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -408,7 +408,7 @@ const char HTTP_COUNTER[] PROGMEM =
   "<br><div id='t' style='text-align:center;'></div>";
 
 const char HTTP_END[] PROGMEM =
-  "<div style='text-align:right;font-size:11px;'><hr/><a href='https://bit.ly/tasmota' target='_blank' style='color:#aaa;'>Tasmota %s%s " D_BY " Theo Arends</a></div>"
+  "<div style='text-align:right;font-size:11px;'><hr/><a href='https://bit.ly/tasmota' target='_blank' style='color:#aaa;'>Tasmota %s%s " D_BY " speca</a></div>"
   "</div>"
   "</body>"
   "</html>";
