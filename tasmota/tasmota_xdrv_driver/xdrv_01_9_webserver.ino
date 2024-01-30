@@ -275,11 +275,11 @@ const char HTTP_FORM_TEMPLATE_FLAG[] PROGMEM =
 //  "<label><input id='c0' name='c0' type='checkbox'><b>" D_OPTION_TEXT "</b></label><br>"
   "</p></fieldset>";
 
-const char HTTP_FORM_MODULE[] PROGMEM =
-  "<fieldset><legend><b>&nbsp;" D_MODULE_PARAMETERS "&nbsp;</b></legend>"
-  "<form method='get' action='md'>"
-  "<p></p><b>" D_MODULE_TYPE "</b> (%s)<br><select id='g99'></select><br>"
-  "<br><table>";
+// const char HTTP_FORM_MODULE[] PROGMEM =
+//   "<fieldset><legend><b>&nbsp;" D_MODULE_PARAMETERS "&nbsp;</b></legend>"
+//   "<form method='get' action='md'>"
+//   "<p></p><b>" D_MODULE_TYPE "</b> (%s)<br><select id='g99'></select><br>"
+//   "<br><table>";
 
 const char HTTP_FORM_WIFI_PART1[] PROGMEM =
   "<fieldset><legend><b>&nbsp;" D_WIFI_PARAMETERS "&nbsp;</b></legend>"
@@ -412,7 +412,7 @@ const char kButtonTitle[] PROGMEM =
 const char kButtonAction[] PROGMEM =
   ".|rt|"
   ".|cn|in|up|mn|"
-  "md|wi|lg|co|tp|dl|rs|"
+  "wi|lg|co|tp|dl|rs|"
   "cs";
 const char kButtonConfirm[] PROGMEM = D_CONFIRM_RESTART "|" D_CONFIRM_RESET_CONFIGURATION;
 
@@ -553,7 +553,7 @@ const WebServerDispatch_t WebServerDispatch[] PROGMEM = {
   { "cm", HTTP_ANY, HandleHttpCommand },
 #ifndef FIRMWARE_MINIMAL
   { "cn", HTTP_ANY, HandleConfiguration },
-  { "md", HTTP_ANY, HandleModuleConfiguration },
+  // { "md", HTTP_ANY, HandleModuleConfiguration },
   { "wi", HTTP_ANY, HandleWifiConfiguration },
   { "lg", HTTP_ANY, HandleLoggingConfiguration },
   { "tp", HTTP_ANY, HandleTemplateConfiguration },
