@@ -275,11 +275,11 @@ const char HTTP_FORM_TEMPLATE_FLAG[] PROGMEM =
 //  "<label><input id='c0' name='c0' type='checkbox'><b>" D_OPTION_TEXT "</b></label><br>"
   "</p></fieldset>";
 
-// const char HTTP_FORM_MODULE[] PROGMEM =
-//   "<fieldset><legend><b>&nbsp;" D_MODULE_PARAMETERS "&nbsp;</b></legend>"
-//   "<form method='get' action='md'>"
-//   "<p></p><b>" D_MODULE_TYPE "</b> (%s)<br><select id='g99'></select><br>"
-//   "<br><table>";
+const char HTTP_FORM_MODULE[] PROGMEM =
+  "<fieldset><legend><b>&nbsp;" D_MODULE_PARAMETERS "&nbsp;</b></legend>"
+  "<form method='get' action='md'>"
+  "<p></p><b>" D_MODULE_TYPE "</b> (%s)<br><select id='g99'></select><br>"
+  "<br><table>";
 
 const char HTTP_FORM_WIFI_PART1[] PROGMEM =
   "<fieldset><legend><b>&nbsp;" D_WIFI_PARAMETERS "&nbsp;</b></legend>"
@@ -553,7 +553,7 @@ const WebServerDispatch_t WebServerDispatch[] PROGMEM = {
   { "cm", HTTP_ANY, HandleHttpCommand },
 #ifndef FIRMWARE_MINIMAL
   { "cn", HTTP_ANY, HandleConfiguration },
-  // { "md", HTTP_ANY, HandleModuleConfiguration },
+  { "md", HTTP_ANY, HandleModuleConfiguration },
   { "wi", HTTP_ANY, HandleWifiConfiguration },
   { "lg", HTTP_ANY, HandleLoggingConfiguration },
   { "tp", HTTP_ANY, HandleTemplateConfiguration },
@@ -1792,71 +1792,71 @@ void TemplateSaveSettings(void) {
 
 /*-------------------------------------------------------------------------------------------*/
 
-void HandleModuleConfiguration(void) {
-  if (!HttpCheckPriviledgedAccess()) { return; }
+// void HandleModuleConfiguration(void) {
+//   if (!HttpCheckPriviledgedAccess()) { return; }
 
-  if (Webserver->hasArg(F("save"))) {
-    ModuleSaveSettings();
-    WebRestart(1);
-    return;
-  }
+//   if (Webserver->hasArg(F("save"))) {
+//     ModuleSaveSettings();
+//     WebRestart(1);
+//     return;
+//   }
 
-  AddLog(LOG_LEVEL_DEBUG, PSTR(D_LOG_HTTP D_CONFIGURE_MODULE));
+//   AddLog(LOG_LEVEL_DEBUG, PSTR(D_LOG_HTTP D_CONFIGURE_MODULE));
 
-  char stemp[30];  // Sensor name
-  uint32_t midx;
-  myio template_gp;
-  TemplateGpios(&template_gp);
+//   char stemp[30];  // Sensor name
+//   uint32_t midx;
+//   myio template_gp;
+//   TemplateGpios(&template_gp);
 
-  WSContentStart_P(PSTR(D_CONFIGURE_MODULE));
-  WSContentSend_P(HTTP_SCRIPT_MODULE_TEMPLATE);
+//   WSContentStart_P(PSTR(D_CONFIGURE_MODULE));
+//   WSContentSend_P(HTTP_SCRIPT_MODULE_TEMPLATE);
 
-  WSContentSend_P(PSTR("function sl(){os=\""));
-  uint32_t vidx = 0;
-  for (uint32_t i = 0; i <= sizeof(kModuleNiceList); i++) {  // "}2'%d'>%s (%d)}3" - "}2'255'>UserTemplate (0)}3" - "}2'0'>Sonoff Basic (1)}3"
-    if (0 == i) {
-      midx = USER_MODULE;
-      vidx = 0;
-    } else {
-      midx = pgm_read_byte(kModuleNiceList + i -1);
-      vidx = midx +1;
-    }
-    WSContentSend_P(HTTP_MODULE_TEMPLATE_REPLACE_INDEX, midx, AnyModuleName(midx).c_str(), vidx);
-  }
-  WSContentSend_P(PSTR("\";sk(%d,99);os=\""), Settings->module);
+//   WSContentSend_P(PSTR("function sl(){os=\""));
+//   uint32_t vidx = 0;
+//   for (uint32_t i = 0; i <= sizeof(kModuleNiceList); i++) {  // "}2'%d'>%s (%d)}3" - "}2'255'>UserTemplate (0)}3" - "}2'0'>Sonoff Basic (1)}3"
+//     if (0 == i) {
+//       midx = USER_MODULE;
+//       vidx = 0;
+//     } else {
+//       midx = pgm_read_byte(kModuleNiceList + i -1);
+//       vidx = midx +1;
+//     }
+//     WSContentSend_P(HTTP_MODULE_TEMPLATE_REPLACE_INDEX, midx, AnyModuleName(midx).c_str(), vidx);
+//   }
+//   WSContentSend_P(PSTR("\";sk(%d,99);os=\""), Settings->module);
 
-  WSContentSendNiceLists(0);
+//   WSContentSendNiceLists(0);
 
-  for (uint32_t i = 0; i < nitems(template_gp.io); i++) {
-    if (ValidGPIO(i, template_gp.io[i])) {
-      WSContentSend_P(PSTR("sk(%d,%d);"), TasmotaGlobal.my_module.io[i], i);  // g0 - g17
-    }
-  }
+//   for (uint32_t i = 0; i < nitems(template_gp.io); i++) {
+//     if (ValidGPIO(i, template_gp.io[i])) {
+//       WSContentSend_P(PSTR("sk(%d,%d);"), TasmotaGlobal.my_module.io[i], i);  // g0 - g17
+//     }
+//   }
 
-#ifdef ESP8266
-#ifdef USE_ADC
-  WSContentSendAdcNiceList(0);
-  WSContentSend_P(PSTR("\";sk(%d," STR(ADC0_PIN) ");"), Settings->my_gp.io[(sizeof(myio) / 2) -1]);
-#endif  // USE_ADC
-#endif  // ESP8266
+// #ifdef ESP8266
+// #ifdef USE_ADC
+//   WSContentSendAdcNiceList(0);
+//   WSContentSend_P(PSTR("\";sk(%d," STR(ADC0_PIN) ");"), Settings->my_gp.io[(sizeof(myio) / 2) -1]);
+// #endif  // USE_ADC
+// #endif  // ESP8266
 
-  WSContentSend_P(PSTR("}wl(sl);"));
+//   WSContentSend_P(PSTR("}wl(sl);"));
 
-  WSContentSendStyle();
-  WSContentSend_P(HTTP_FORM_MODULE, AnyModuleName(MODULE).c_str());
-  for (uint32_t i = 0; i < nitems(template_gp.io); i++) {
-    if (ValidGPIO(i, template_gp.io[i])) {
-      snprintf_P(stemp, 3, PINS_WEMOS +i*2);
-      WSContentSend_P(PSTR("<tr><td style='width:116px'>%s <b>" D_GPIO "%d</b></td><td style='width:146px'><select id='g%d' onchange='ot(%d,this.value)'></select></td>"),
-        (WEMOS==TasmotaGlobal.module_type)?stemp:"", i, i, i);
-      WSContentSend_P(PSTR("<td style='width:54px'><select id='h%d'></select></td></tr>"), i);
-    }
-  }
-  WSContentSend_P(PSTR("</table>"));
-  WSContentSend_P(HTTP_FORM_END);
-  WSContentSpaceButton(BUTTON_CONFIGURATION);
-  WSContentStop();
-}
+//   WSContentSendStyle();
+//   WSContentSend_P(HTTP_FORM_MODULE, AnyModuleName(MODULE).c_str());
+//   for (uint32_t i = 0; i < nitems(template_gp.io); i++) {
+//     if (ValidGPIO(i, template_gp.io[i])) {
+//       snprintf_P(stemp, 3, PINS_WEMOS +i*2);
+//       WSContentSend_P(PSTR("<tr><td style='width:116px'>%s <b>" D_GPIO "%d</b></td><td style='width:146px'><select id='g%d' onchange='ot(%d,this.value)'></select></td>"),
+//         (WEMOS==TasmotaGlobal.module_type)?stemp:"", i, i, i);
+//       WSContentSend_P(PSTR("<td style='width:54px'><select id='h%d'></select></td></tr>"), i);
+//     }
+//   }
+//   WSContentSend_P(PSTR("</table>"));
+//   WSContentSend_P(HTTP_FORM_END);
+//   WSContentSpaceButton(BUTTON_CONFIGURATION);
+//   WSContentStop();
+// }
 
 void ModuleSaveSettings(void) {
   char tmp[8];         // WebGetArg numbers only
